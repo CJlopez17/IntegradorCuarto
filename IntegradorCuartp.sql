@@ -1,7 +1,9 @@
+-- Drop y Create para la base de datos
 DROP DATABASE IntegradorCuarto;
 CREATE DATABASE IntegradorCuarto;
 USE IntegradorCuarto;
 
+-- Creacion de la tabla Detenidos
 CREATE TABLE Detenidos (
     id_detenido VARCHAR(10) PRIMARY KEY,
     sexo VARCHAR(10) NOT NULL,
@@ -17,6 +19,7 @@ CREATE TABLE Detenidos (
     nro_detenciones INT NOT NULL
 );
 
+-- Creccion de la tabla detenciones
 CREATE TABLE Detenciones (
     id_detencion INT AUTO_INCREMENT PRIMARY KEY,
     id_detenido VARCHAR(10) NOT NULL,
@@ -31,17 +34,20 @@ CREATE TABLE Detenciones (
     FOREIGN KEY (id_detenido) REFERENCES Detenidos(id_detenido)
 );
 
+-- Creacion de la tabla Mobilizaciones
 CREATE TABLE Movilizaciones (
     id_movilizacion VARCHAR(10) PRIMARY KEY,
     movilizacion VARCHAR(50) NOT NULL
 );
 
+-- Creacion de la tabla Armas
 CREATE TABLE Armas (
     codigo_arma VARCHAR(10) PRIMARY KEY,
     tipo_arma VARCHAR(50) NOT NULL,
     arma VARCHAR(50) NOT NULL
 );
 
+-- Creacion de la tabla Detenciones_Movilizaciones
 CREATE TABLE Detenciones_Movilizaciones (
     id_detencion INT,
     id_movilizacion VARCHAR(10),
@@ -50,6 +56,7 @@ CREATE TABLE Detenciones_Movilizaciones (
     FOREIGN KEY (id_movilizacion) REFERENCES Movilizaciones(id_movilizacion)
 );
 
+-- Creaccion de la tabla Movilizaciones_Armas
 CREATE TABLE Movilizaciones_Armas (
     id_movilizacion VARCHAR(10),
     codigo_arma VARCHAR(10),
@@ -58,12 +65,14 @@ CREATE TABLE Movilizaciones_Armas (
     FOREIGN KEY (codigo_arma) REFERENCES Armas(codigo_arma)
 );
 
+-- Creacion de la tabla Ubicaciones
 CREATE TABLE Ubicaciones (
     id_ubicacion VARCHAR(10) PRIMARY KEY,
     lugar VARCHAR(100) NOT NULL,
     tipo_lugar VARCHAR(50) NOT NULL
 );
 
+-- Creacion de la tabla Provincia
 CREATE TABLE Provincias (
     codigo_provincia VARCHAR(10) PRIMARY KEY,
     provincia VARCHAR(50) NOT NULL,
@@ -71,6 +80,7 @@ CREATE TABLE Provincias (
     densidad_poblacional FLOAT
 );
 
+-- Creaccion de la tabla Cantones
 CREATE TABLE Cantones (
     codigo_canton VARCHAR(10) PRIMARY KEY,
     canton VARCHAR(50) NOT NULL,
@@ -80,6 +90,7 @@ CREATE TABLE Cantones (
     FOREIGN KEY (codigo_provincia) REFERENCES Provincias(codigo_provincia)
 );
 
+-- Creacion de la tabla Distritos
 CREATE TABLE Distritos (
     codigo_distrito VARCHAR(10) PRIMARY KEY,
     distrito VARCHAR(50) NOT NULL,
@@ -87,6 +98,7 @@ CREATE TABLE Distritos (
     FOREIGN KEY (codigo_canton) REFERENCES Cantones(codigo_canton)
 );
 
+-- Creacion de la tabla Parroquias
 CREATE TABLE Parroquias (
     codigo_parroquia VARCHAR(10) PRIMARY KEY,
     parroquia VARCHAR(50) NOT NULL,
@@ -96,6 +108,7 @@ CREATE TABLE Parroquias (
     FOREIGN KEY (codigo_distrito) REFERENCES Distritos(codigo_distrito)
 );
 
+-- Creacion de la tabla Subcircuitos
 CREATE TABLE Subcircuitos (
     codigo_subcircuito VARCHAR(10) PRIMARY KEY,
     subcircuito VARCHAR(50) NOT NULL,
@@ -103,6 +116,7 @@ CREATE TABLE Subcircuitos (
     FOREIGN KEY (codigo_distrito) REFERENCES Distritos(codigo_distrito)
 );
 
+-- Creacion de la tabla Zonas
 CREATE TABLE Zonas (
     codigo_zona VARCHAR(10) PRIMARY KEY,
     zona VARCHAR(50) NOT NULL,
@@ -111,6 +125,7 @@ CREATE TABLE Zonas (
     FOREIGN KEY (codigo_subcircuito) REFERENCES Subcircuitos(codigo_subcircuito)
 );
 
+-- Creacion de la tabla Ubicaciones_Provincias
 CREATE TABLE Ubicaciones_Provincias (
     id_ubicacion VARCHAR(10),
     codigo_provincia VARCHAR(10),
@@ -119,6 +134,7 @@ CREATE TABLE Ubicaciones_Provincias (
     FOREIGN KEY (codigo_provincia) REFERENCES Provincias(codigo_provincia)
 );
 
+-- Creacion de la tabla Ubicaciones_Cantones
 CREATE TABLE Ubicaciones_Cantones (
     id_ubicacion VARCHAR(10),
     codigo_canton VARCHAR(10),
@@ -127,6 +143,7 @@ CREATE TABLE Ubicaciones_Cantones (
     FOREIGN KEY (codigo_canton) REFERENCES Cantones(codigo_canton)
 );
 
+-- Creacion de la tabla Ubicaciones_Distritos
 CREATE TABLE Ubicaciones_Distritos (
     id_ubicacion VARCHAR(10),
     codigo_distrito VARCHAR(10),
@@ -135,6 +152,7 @@ CREATE TABLE Ubicaciones_Distritos (
     FOREIGN KEY (codigo_distrito) REFERENCES Distritos(codigo_distrito)
 );
 
+-- Creacion de la tabla Ubicaciones_Parroquias
 CREATE TABLE Ubicaciones_Parroquias (
     id_ubicacion VARCHAR(10),
     codigo_parroquia VARCHAR(10),
@@ -143,6 +161,7 @@ CREATE TABLE Ubicaciones_Parroquias (
     FOREIGN KEY (codigo_parroquia) REFERENCES Parroquias(codigo_parroquia)
 );
 
+-- Creacion de la tabla Ubicaciones_Subcircuitos
 CREATE TABLE Ubicaciones_Subcircuitos (
     id_ubicacion VARCHAR(10),
     codigo_subcircuito VARCHAR(10),
@@ -151,6 +170,7 @@ CREATE TABLE Ubicaciones_Subcircuitos (
     FOREIGN KEY (codigo_subcircuito) REFERENCES Subcircuitos(codigo_subcircuito)
 );
 
+-- Creacion de la tabla Ubicaciones_Zonas
 CREATE TABLE Ubicaciones_Zonas (
     id_ubicacion VARCHAR(10),
     codigo_zona VARCHAR(10),
@@ -158,4 +178,9 @@ CREATE TABLE Ubicaciones_Zonas (
     FOREIGN KEY (id_ubicacion) REFERENCES Ubicaciones(id_ubicacion),
     FOREIGN KEY (codigo_zona) REFERENCES Zonas(codigo_zona)
 );
+
+-- Creacion de Usuario todos los pivilegios
+CREATE USER 'usuario1'@'localhost' IDENTIFIED BY 'mysql#DB02';
+GRANT INSERT, UPDATE, DELETE, CREATE, DROP ON IntegradorCuarto.* TO 'usuario1'@'localhost';
+FLUSH PRIVILEGES;
 
