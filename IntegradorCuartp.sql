@@ -5,10 +5,10 @@ USE IntegradorCuarto;
 
 -- Creacion de la tabla Detenidos
 CREATE TABLE Detenidos (
-    id_detenido VARCHAR(10) PRIMARY KEY,
+    id_detenido INT PRIMARY KEY,
     sexo VARCHAR(10) NOT NULL,
     edad INT NOT NULL,
-    nacionalidad VARCHAR(50) NOT NULL,
+    nacionalidad VARCHAR(50),
     autoidentificacion_etnica VARCHAR(50),
     estado_civil VARCHAR(20),
     estatus_migratorio VARCHAR(20),
@@ -24,13 +24,14 @@ CREATE TABLE Detenciones (
     id_detencion INT AUTO_INCREMENT PRIMARY KEY,
     id_detenido VARCHAR(10) NOT NULL,
     fecha_detencion DATE NOT NULL,
-    presunta_infraccion VARCHAR(100) NOT NULL,
-    presunta_subinfraccion VARCHAR(100),
-    presunta_flagrancia VARCHAR(50),
-    presunta_modalidad VARCHAR(50),
+    presunta_infraccion VARCHAR(250) NOT NULL,
+    presunta_subinfraccion VARCHAR(250),
+    presunta_flagrancia VARCHAR(5),
+    presunta_modalidad VARCHAR(250),
     hora_detencion TIME NOT NULL,
     codigo_iccs FLOAT,
     id_ubicacion VARCHAR(10) NOT NULL,
+    FOREIGN KEY (id_ubicacion) REFERENCES Ubicaciones(id_ubicacion)
     FOREIGN KEY (id_detenido) REFERENCES Detenidos(id_detenido)
 );
 
@@ -67,15 +68,16 @@ CREATE TABLE Movilizaciones_Armas (
 
 -- Creacion de la tabla Ubicaciones
 CREATE TABLE Ubicaciones (
-    id_ubicacion VARCHAR(10) PRIMARY KEY,
+    id_ubicacion INT PRIMARY KEY,
     lugar VARCHAR(100) NOT NULL,
-    tipo_lugar VARCHAR(50) NOT NULL
+    tipo_lugar VARCHAR(100) NOT NULL
 );
 
 -- Creacion de la tabla Provincia
 CREATE TABLE Provincias (
     codigo_provincia VARCHAR(10) PRIMARY KEY,
     provincia VARCHAR(50) NOT NULL,
+    nro_pobladores INT,
     superficie_provincia FLOAT,
     densidad_poblacional FLOAT
 );
@@ -94,7 +96,7 @@ CREATE TABLE Cantones (
 CREATE TABLE Distritos (
     codigo_distrito VARCHAR(10) PRIMARY KEY,
     distrito VARCHAR(50) NOT NULL,
-    codigo_canton VARCHAR(10) NOT NULL,
+    codigo_canton INT NOT NULL,
     FOREIGN KEY (codigo_canton) REFERENCES Cantones(codigo_canton)
 );
 
@@ -102,6 +104,7 @@ CREATE TABLE Distritos (
 CREATE TABLE Parroquias (
     codigo_parroquia VARCHAR(10) PRIMARY KEY,
     parroquia VARCHAR(50) NOT NULL,
+    nro_pobladores int NOT NULL,
     codigo_distrito VARCHAR(10) NOT NULL,
     superficie_parroquia FLOAT,
     densidad_poblacional FLOAT,
@@ -110,7 +113,7 @@ CREATE TABLE Parroquias (
 
 -- Creacion de la tabla Subcircuitos
 CREATE TABLE Subcircuitos (
-    codigo_subcircuito VARCHAR(10) PRIMARY KEY,
+    codigo_subcircuito VARCHAR(15) PRIMARY KEY,
     subcircuito VARCHAR(50) NOT NULL,
     codigo_distrito VARCHAR(10) NOT NULL,
     FOREIGN KEY (codigo_distrito) REFERENCES Distritos(codigo_distrito)

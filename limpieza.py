@@ -29,35 +29,32 @@ def convertir_fecha(fecha):
     print(f"Error al convertir la fecha: {fecha}")
     return fecha
 
-# Leer el archivo CSV especificando el delimitador correcto
-try:
-    df = pd.read_csv('NombreDelArchivo.csv', delimiter=';')
-except pd.errors.ParserError:
-    print("Error al leer el archivo CSV. Verifica la línea problemática.")
-    raise
+# Leer el archivo CSV
+df = pd.read_csv('NombreDelArchivo.csv')
+
 
 # Contar las ocurrencias de "SIN DATO", "SE DESCONOCE" y "NO APLICA" antes de reemplazar
 sin_dato_count = (df == "SIN DATO").sum().sum()
 se_desconoce_count = (df == "SE DESCONOCE").sum().sum()
 no_aplica_count = (df == "NO APLICA").sum().sum()
+tipo_arma_count = (df== "NINGUNA").sum().sum()
 
 # Reemplazar "SIN DATO", "SE DESCONOCE" y "NO APLICA" por NaN
-df.replace(["SIN DATO", "SE DESCONOCE", "NO APLICA"], pd.NA, inplace=True)
+df.replace(["SIN DATO", "SE DESCONOCE", "NO APLICA", 'NINGUNA'], pd.NA, inplace=True)
 
 # Aplicar la función de conversión a la columna de fechas
-# Reemplaza 'fecha_detencion_aprehension' con el nombre real de la columna que contiene las fechas
 cambios_realizados = 0
-# df['fecha_detencion_aprehension'] = df['fecha_detencion_aprehension'].apply(convertir_fecha)
-df['Fecha de Detención'] = df['Fecha de Detención'].apply(convertir_fecha)
+df['fecha_detencion_aprehension'] = df['fecha_detencion_aprehension'].apply(convertir_fecha)
 
 # Guardar el resultado en un nuevo archivo CSV
-df.to_csv('año_cleaned_converted.csv', index=False)
+df.to_csv('2024_cleaned_converted.csv', index=False)
 
-# Mostrar el número de datos modificados
-print(f"Fechas convertidas y archivo guardado como 'año_cleaned_converted.csv'. Total de cambios realizados: {cambios_realizados}")
+# Mostrar el número de datos modificados y una vista previa del contenido
+print(f"Fechas convertidas y archivo guardado como '2024_cleaned_converted.csv'. Total de cambios realizados: {cambios_realizados}")
 print(f"Número de datos 'SIN DATO' modificados: {sin_dato_count}")
 print(f"Número de datos 'SE DESCONOCE' modificados: {se_desconoce_count}")
 print(f"Número de datos 'NO APLICA' modificados: {no_aplica_count}")
+print(f"Número de datos 'NINGUNA' modificados: {tipo_arma_count}")
 
 # Inspeccionar las primeras filas para verificar el contenido
 print(df.head())
